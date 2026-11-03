@@ -190,10 +190,8 @@
   </section>
 
   <section class="panel" id="timer-wrap">
-    <h2>time until access</h2>
-    <div id="timer">--:--:--</div>
-    <div id="timer-label">HOURS : MINUTES : SECONDS</div>
-    <button id="open-btn" hidden>open the site now</button>
+    <h2>access granted</h2>
+    <button id="open-btn">open the site now</button>
     <div id="mobile-note">Computer only. Phones are not allowed.</div>
   </section>
 
@@ -218,14 +216,8 @@
 <script>
 /* ================= SETTINGS (edit these) ================= */
 
-// The fixed moment the countdown ends. Because this is a fixed date/time,
-// the timer "keeps counting" even when nobody has the page open.
-// IMPORTANT: change this to (the moment you send her the link + 3 hours).
-// Format: YYYY-MM-DDTHH:MM:SS+02:00  (+02:00 = Cairo time)
-const DEADLINE = new Date("2026-11-03T22:25:00+02:00").getTime();
-
 // Where the "open the site now" button takes her.
-const SURPRISE_URL = "surprise.html";
+const SURPRISE_URL = "https://www-ca.github.io/PrincessAlya/";
 
 /* ========================================================== */
 
@@ -284,31 +276,10 @@ function type() {
 }
 type();
 
-// ---------- Countdown ----------
-const timerEl = document.getElementById("timer");
+// ---------- Button ----------
 const btn = document.getElementById("open-btn");
 const note = document.getElementById("mobile-note");
-const pad = n => String(n).padStart(2, "0");
-let unlocked = false;
-
-function tick() {
-  const left = DEADLINE - Date.now();
-  if (left <= 0) {
-    timerEl.textContent = "00:00:00";
-    timerEl.classList.remove("low");
-    if (!unlocked) {
-      unlocked = true;
-      btn.hidden = false;
-      if (/Android|iPhone|iPad|iPod|Mobi/i.test(navigator.userAgent)) note.style.display = "block";
-    }
-    return;
-  }
-  const s = Math.floor(left / 1000);
-  timerEl.textContent = pad(Math.floor(s / 3600)) + ":" + pad(Math.floor((s % 3600) / 60)) + ":" + pad(s % 60);
-  timerEl.classList.toggle("low", s <= 60);
-}
-tick();
-setInterval(tick, 250);
+if (/Android|iPhone|iPad|iPod|Mobi/i.test(navigator.userAgent)) note.style.display = "block";
 
 btn.addEventListener("click", () => { location.href = SURPRISE_URL; });
 
